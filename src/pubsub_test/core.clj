@@ -111,7 +111,7 @@
                        (.setMaxAckExtensionPeriod (Duration/ofHours 8))
                        (.setExecutorProvider (executor-provider 1))
                        (.setParallelPullCount 8)
-                       (set-max-outstanding-element-count 1)
+                       (set-max-outstanding-element-count 20)
                        .build)]
     (.addListener subscriber (logger) (MoreExecutors/directExecutor))
     (->SubscriberImpl subscriber)))
