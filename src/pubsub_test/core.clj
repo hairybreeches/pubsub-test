@@ -1,25 +1,17 @@
 (ns pubsub-test.core
   (:require [cheshire.core :as json])
-  (:import [com.fasterxml.jackson.core JsonParseException]
-           [com.google.pubsub.v1 TopicName PushConfig SubscriptionName PubsubMessage ListTopicsRequest]
-           [com.google.cloud.pubsub.v1 TopicAdminClient Publisher SubscriptionAdminClient Subscriber$Builder MessageReceiver]
-           [com.google.cloud.pubsub.v1.Subscriber]
+  (:import [com.google.pubsub.v1 TopicName SubscriptionName PubsubMessage]
+           [com.google.cloud.pubsub.v1 Publisher MessageReceiver]
            [com.google.api.core ApiService$Listener ApiFutures ApiFutureCallback]
            [com.google.protobuf ByteString]
-           io.grpc.Status$Code
            [org.threeten.bp Duration]
            [com.google.common.util.concurrent MoreExecutors]
-           [com.google.api.gax.rpc ApiException AlreadyExistsException]
            [com.google.api.gax.core InstantiatingExecutorProvider]
-           [java.lang.reflect Method]
            [com.google.api.gax.batching FlowControlSettings]
            [com.google.pubsub.v1
             PubsubMessage
-            TopicName
-            ProjectName
-            ListTopicsRequest]
-           com.google.protobuf.ByteString
-           com.fasterxml.jackson.core.JsonParseException))
+            TopicName]
+           com.google.protobuf.ByteString))
 
 (def project-name "meters-and-supply-points")
 (def topic-name "pubsub-test-topic")
@@ -140,7 +132,7 @@
 
 (defn print-and-sleep
   [unparsed-message acker]
-  (let [{:keys [sleep-time] :as message} (parse unparsed-message)]
+  (let [{:keys [sleep-time]} (parse unparsed-message)]
     (log "Starting" (message-details unparsed-message sleep-time))
     (Thread/sleep sleep-time)
     (log "Finished" (message-details unparsed-message sleep-time))
