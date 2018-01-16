@@ -1,39 +1,21 @@
 (defproject pubsub-test "__VERSION__"
-  :description "meters-workers for entity-store"
-  :url "http://example.com/FIXME"
+  :description "pubsub harness for reducing duplicate messages"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [cheshire "5.7.0"]
                  [medley "0.8.4"]
-                 [com.google.cloud/google-cloud "0.30.0-alpha"]
-                 [com.google.guava/guava "23.4-jre"]]
+                 [com.google.cloud/google-cloud-pubsub "0.32.0-beta"]
+                 ;; logging
+                 [com.taoensso/timbre "4.8.0"]
+                 [com.fzakaria/slf4j-timbre "0.3.4"]
+                 [log4j/log4j "1.2.17"]
+                 [org.slf4j/jul-to-slf4j "1.7.25"]
+                 [org.slf4j/jcl-over-slf4j "1.7.25"]
 
-  :profiles {:dev {:source-paths ["dev" "src" "it"]
-                   :test-paths ["test"]
-                   :resource-paths ["test/resources"]
-                   :dependencies [[rest-cljer "0.2.1"]
-                                  [ring/ring-mock "0.3.0"]
-                                  [org.apache.curator/curator-client "3.3.0"]
-                                  [org.apache.curator/curator-test "3.3.0"]
-                                  [org.apache.kafka/kafka_2.11 "0.10.0.0"]
-                                  [integrant/repl "0.2.0"]]
-                   :env {:restdriver-port "8081"}}
-             :integration {:test-paths ["it"]}
-             :uberjar {}}
+]
 
-    :plugins [[lein-environ "0.5.0"]
-            [venantius/ultra "0.5.1"]
-            [jonase/eastwood "0.2.3"]]
-
-  :eastwood {:exclude-linters [:def-in-def :unused-ret-vals]}
-
-  :test-selectors {:default (complement #(or (:integration %)
-                                           (:acceptance %)
-                                           (:schema-validation %)))
-                   :acceptance :acceptance
-                   :integration :integration
-                   :schema-validation :schema-validation
-                   :all (constantly true)}
-  :jvm-opts ["-XX:MaxJavaStackTraceDepth=-1"])
+  :plugins [[info.sunng/lein-bootclasspath-deps "0.3.0"]]
+  :boot-dependencies [[org.mortbay.jetty.alpn/alpn-boot "8.1.11.v20170118"]]
+ )
 
